@@ -19,9 +19,8 @@ app.use('/home', home)
 const shop = require("./routes/shop")
 app.use('/shop', shop)
 
-const login = require("./routes/login")
-app.use('/login', login)
-
+const user = require("./routes/user")
+app.use('/user', user)
 
 //database connection
 mongoose.connect("mongodb://localhost:27017/orderDetails")
