@@ -28,6 +28,13 @@ app.use('/user', user)
 const order = require("./routes/order")
 app.use('/order', order)
 
+const about = require("./routes/about")
+app.use('/about', about)
+
+const contact = require("./routes/contact")
+app.use('/contact', contact)
+
+
 
 
 app.listen(3000)

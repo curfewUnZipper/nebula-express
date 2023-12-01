@@ -26,6 +26,11 @@ router.get("/login",(req,res) =>{
     
 })
 
+router.get("/dashboard",(req,res) =>{
+    res.render('user/dashboard')    
+    
+})
+
 
 router.get("/signup",(req,res) =>{
     res.render('user/signup')
@@ -45,7 +50,7 @@ router.post("/login",(req,res)=>{
     flagChange()
     async function flagChange(){
     flagLogin = await loginUser(req.body.username,req.body.password)
-    if (flagLogin==true){res.redirect("/")}
+    if (flagLogin==true){res.redirect("/user/dashboard")}
     else{console.log("Invalid userID or Password")
     res.redirect("/user/login")}
   } 
@@ -61,7 +66,7 @@ router.post("/signup",(req,res)=>{
         req.body.email!=''){
         insertUser(req.body.username,req.body.password,req.body.email)    
 }
-    return res.redirect("/")
+    return res.redirect("/user/dashboard")
 })
 
 
