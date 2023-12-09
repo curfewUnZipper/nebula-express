@@ -59,32 +59,42 @@ header .logo
     letter-spacing:2px;
     
 }
-header ul
-{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:10000;
+header ul li a.hover,
+header ul li a.active {
+  background: #fff;
+  color: #2b1055;
+  border-radius: 20px;
 }
-header ul li
-{
-    list-style:none;
-    margin-left:20px;
-
+header ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
 }
-header ul li a:not(.shop ul li a)
-{
-    text-decoration:none;
-    padding:6px 15px;
-    color:#fff;
-    
+header ul li {
+  list-style: none;
+  margin-left: 10px;
 }
-header ul li a:hover 
-{
-    background:black;
-    color:black;
-    border-radius:20px;
-} 
+header ul li a {
+  text-decoration: none;
+  padding: 6px 15px;
+  color: #fff;
+}
+header ul li a .profile {
+  text-decoration: none;
+  color: #fff;
+  font-size: 23px;
+}
+header ul li a .profile:hover {
+  background: #fff;
+  color: #2b1055;
+  border-radius: 0px;
+}
+header ul li a:hover {
+  background: #fff;
+  color: #2b1055;
+  border-radius: 20px;
+}
 section
 {
     position:relative;

@@ -1,5 +1,6 @@
 const express = require('express')
 const app= express()
+require("dotenv").config()
 
 app.set('view engine','ejs') //anpother engine: pug
 app.use(express.urlencoded({extended:true})) //middleware to excess form values
@@ -34,8 +35,18 @@ app.use('/about', about)
 const contact = require("./routes/contact")
 app.use('/contact', contact)
 
+//serverPrsnt()
+function prsntFetch(){
+    let pres = require("./routes/user").pres 
+    console.log("From fetching function:"+ pres)
+    return pres
+}
 
+async function serverPrsnt(){
+    console.log("finding value:"+ prsntFetch())
+    setInterval(async=>{console.log("from server "+prsntFetch())},1000)
+}
 
-
-app.listen(3000)
-console.log("Server is live @3000")
+app.listen(process.env.PORT,()=>{
+    console.log("Server is live @3000")
+})
