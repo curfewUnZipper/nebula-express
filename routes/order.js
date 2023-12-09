@@ -1,9 +1,11 @@
 //using router
 const express = require('express')
 const router = express.Router()
-const mongoose = require("mongoose") 
+const mongoose = require("mongoose")
+require("dotenv").config()
+
     //database connection
-mongoose.connect("mongodb://localhost:27017/orderDetails")
+mongoose.connect(process.env.atlas1+process.env.atlas2+process.env.atlas3+process.env.atlas4)
 var db= mongoose.connection;
 db.on('error',()=>{console.log("Error in Connecting to Database")})
 db.once('open',()=>{console.log("Connected to Database in ORDERS")})

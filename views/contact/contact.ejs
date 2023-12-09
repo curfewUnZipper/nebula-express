@@ -3,6 +3,8 @@
         <head>
             <title>Nebula Contact</title>
             <link rel="stylesheet" href="master.css">
+            <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+          
             <style type="text/css">
                 *
                 {
@@ -50,39 +52,41 @@
                 text-transform:uppercase;
                 letter-spacing:2px;
 
+            }header ul li a.hover,
+            header ul li a.active {
+            background: #fff;
+            color: #2b1055;
+            border-radius: 20px;
             }
-            header ul
-            {
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                z-index:10000;
+            header ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
             }
-            header ul li
-            {
-                list-style:none;
-                margin-left:20px;
-
+            header ul li {
+            list-style: none;
+            margin-left: 10px;
             }
-            header ul li a
-            {
-                text-decoration:none;
-                padding:6px 15px;
-                color: #fff;
-                
+            header ul li a {
+            text-decoration: none;
+            padding: 6px 15px;
+            color: #fff;
             }
-            header ul li a:hover
-            {
-                background:#fff;
-                color:#2b1055;
-                border-radius:20px;
+            header ul li a .profile {
+            text-decoration: none;
+            color: #fff;
+            font-size: 23px;
             }
-            header ul li a.hover,
-            header ul li a.active
-            {
-                background:#fff;
-                color:#2b1055;
-                border-radius: 20px;
+            header ul li a .profile:hover {
+            background: #fff;
+            color: #2b1055;
+            border-radius: 0px;
+            }
+            header ul li a:hover {
+            background: #fff;
+            color: #2b1055;
+            border-radius: 20px;
             }
             .contact{
                 position:relative;
@@ -130,10 +134,12 @@
             <header>
                 <a href="#" class="logo">Nebula</a>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="NebulaShop.html">Shop</a></li>
-                    <li><a href="#" class="active">Contact</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/shop">Shop</a></li>
+                    <li><a href="/contact" class="active">Contact</a></li>
+                    <li><a href="/user" ><i class='bx bx-user-circle profile'></i></a></li>
+
                 </ul>
             </header>
             <section>
