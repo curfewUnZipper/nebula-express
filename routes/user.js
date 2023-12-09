@@ -2,7 +2,9 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require("mongoose") 
-    
+require("dotenv").config()
+let prsnt = null //the thing
+var flagLogin = false;
 //database connection
 mongoose.connect(process.env.atlas1+process.env.atlas2+process.env.atlas3+process.env.atlas4)
 var db= mongoose.connection;
@@ -18,7 +20,13 @@ router.get("/",(req,res) =>{
     res.redirect("/user/login")
    })
 
-
+router.get("/out",(req,res)=>{
+    prsnt = null;
+    //module.exports.pres=prsnt;
+     console.log("See you soon "+flagLogin.userIn.Name)
+    flagLogin.userIn.Name = false;
+    res.redirect("/user/login")
+})
 router.get("/login",(req,res) =>{
     if (prsnt==null){
         res.render("user/login")
@@ -45,15 +53,15 @@ router.get("/admin",(req,res) =>{
 
 //login
 router.post("/login",(req,res)=>{
-    var flagLogin = false;
-    if (req.body.username!='' &&
+    if (req.body.email!='' &&
         req.body.password!=''){
-    flagChange()
-    async function flagChange(){
-    flagLogin = await loginUser(req.body.username,req.body.password)
-    if (flagLogin==true){res.redirect("/user/dashboard")}
-    else{console.log("Invalid userID or Password")
-    res.redirect("/user/login")}
+    flagChangeLog()
+    async function flagChangeLog(){
+    flagLogin = await loginUser(req.body.email,req.body.password)
+    if (flagLogin.flag==true){prsnt=0;
+        //module.exports.pres = prsnt;
+        res.redirect("/user/dashboard")}
+    else{console.log("Invalid email or Password")}
   } 
 }   
     
