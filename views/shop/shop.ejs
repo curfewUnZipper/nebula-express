@@ -27,9 +27,9 @@
     <header class="shop">
         <form action="/" method="post">
         <ul>
-            <li><a href="shop?type=tshirts">T-Shirts</a></li>
-            <li><a href="shop?type=oversizedts">Oversized T-Shirt</a></li>
-            <li><a href="shop?type=hoodies">Hoodies</a></li>
+            <li><a href="/shop?type=tshirts">T-Shirts</a></li>
+            <li><a href="/shop?type=oversizedts">Oversized T-Shirt</a></li>
+            <li><a href="/shop?type=hoodies">Hoodies</a></li>
             <li><a href="/shop">Design</a></li>
         </ul>
         </form>
@@ -71,7 +71,7 @@
                 <% for (j=0;j<4;j++){ %>
                 <div class="fig">
                     <img class="figg" data-modal-target="#modal" alt="SERVER: IMAGE 404"src=<%="/shopItems/"+locals.type + '/' + locals.products[i+j]%> width="300px" height="200px">
-                    <figcaption><%= locals.products[i+j].replace(/%20/g," ") %></figcaption>
+                    <figcaption><%= locals.products[i+j].replace(/%20/g," ").slice(0,locals.products[i+j].replace(/%20/g," ").length-4) %></figcaption>
 
                     </div>
                 <% } %>
@@ -81,7 +81,7 @@
     </div>
 
 
-<!-- ----------------THE INFORMATION POPUP-------------- -->
+<!-- ----------------THE INFORMATION POPUP-------------- 
 <div class="modal" id="modal">
 <div class="modal-header">
     <div class="title">Example Modal</div>
@@ -89,9 +89,9 @@
 </div>
 <div class="modal-body">
     Lorem ipsum dolor <br>
-    <button onclick="location.href = '/order'" style="font-size: xx-large; padding: 10px; margin: 10px;">Order</button></div>
+    <button id="orderButton" style="font-size: xx-large; padding: 10px; margin: 10px;">Order</button></div>
 </div>
-<div id="overlay"></div>
+<div id="overlay"></div> -->
 
 
 
