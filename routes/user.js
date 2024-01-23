@@ -13,7 +13,7 @@ db.once('open',()=>{console.log("Connected to Database in USERS")})
 const userSchema = new mongoose.Schema({Name: String,
                                         password: String,
                                         email: String,
-                                        admin: Boolean})
+                                        role: String})
 USER = mongoose.model("User", userSchema)
 
 
@@ -60,7 +60,7 @@ router.post("/signup",(req,res)=>{
     if (req.body.name!='' && 
         req.body.password!='' &&
         req.body.email!=''){
-        flagChangeSign = await insertUser(req.body.name,req.body.password,req.body.email,false)    
+        flagChangeSign = await insertUser(req.body.name,req.body.password,req.body.email,"user")    
         if (flagChangeSign==true){prsnt=null;
             module.exports.userInfo = {pres:null,user:null};
             return res.redirect("/user/login")
@@ -78,7 +78,7 @@ router.post("/adminSignup",(req,res)=>{
     if (req.body.name!='' && 
         req.body.password!='' &&
         req.body.email!=''){
-        flagChangeSign = await insertUser(req.body.name,req.body.password,req.body.email,true)    
+        flagChangeSign = await insertUser(req.body.name,req.body.password,req.body.email,"admin")    
         if (flagChangeSign==true){prsnt=null;
             module.exports.userInfo = {pres:null,user:null};
             return res.redirect("/user/login")
@@ -115,11 +115,11 @@ router.post("/login",(req,res)=>{
 //-------------------------FUNCTIONS---------------------------------
 
 //signup function
-async function insertUser(name,passwd,mail,admn){
+async function insertUser(name,passwd,mail,rle){
     var data= new USER({Name : name,
                         password : passwd,
                         email : mail,
-                        admin:admn
+                        role:rle
                       })
     try{
         var already = await USER.findOne({email:mail})
