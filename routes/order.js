@@ -12,7 +12,7 @@ db.once('open',()=>{console.log("Connected to Database in ORDERS")})
 
 const orderSchema = new mongoose.Schema({User: String,
     order: Object})
-ORDER = mongoose.model("shirts", orderSchema)
+ORDER = mongoose.model("orders", orderSchema)
 //-------------------------------------------------------------------------------------------------------------------
 
 
@@ -21,11 +21,20 @@ ORDER = mongoose.model("shirts", orderSchema)
 
 //variables for usage
 let orderProduct=0;
-// let userDeets = require("../routes/user.js").userInfo  || {prsnt:1,user:{email:"fake@fake.com",name:"fake",role:"user"}}
-// console.log("current user", userDeets.user)
+let qty_field = 0;
+let users =  {prsnt:1,user:{email:"fake@fake.com",name:"fake",role:"admin"}}
+// console.log("current user", users.user)
+
+
+
+
+
+
+
+
 
 router.get("/",(req,res) =>{
-    let users = require("../routes/user.js").userInfo || {prsnt:1,user:{email:"fake@fake.com",name:"fake",role:"user"}}
+    // let users = require("../routes/user.js").userInfo
     // console.log("from get/: ", users.user)
     if (users.user==null){
         res.redirect("/user/login")
@@ -56,7 +65,7 @@ router.get("/",(req,res) =>{
 //--------------------------------------------------------POST---------------------------------------------------
 router.post("/orderPreference", (req,res)=>{
     orderProduct = req.body.color.split(',',3)
-    console.log("ORDER:",orderProduct)
+    // console.log("ORDER:",orderProduct)
     res.redirect("/order")
 })
 
@@ -66,12 +75,12 @@ router.post("/orderPreference", (req,res)=>{
 
 //Stage 2
 router.post("/fillFields",(req,res)=>{
-    let users = require("../routes/user.js").userInfo || {prsnt:1,user:{email:"fake@fake.com",name:"fake",role:"user"}}
+    // let users = require("../routes/user.js").userInfo
     // console.log(users.user.role)
-    console.log(req.body)
     req.body.field = req.body.field.filter(function (element){ //to remove empty fields from response
         return element != ''
     })
+    qty_field=req.body;
         // console.log("in custom fields post",req.body)
     if (users.user.role == "admin"){
         res.render("order/adminFields2", {product:orderProduct, user:users.user, instruct:req.body})
@@ -83,13 +92,25 @@ router.post("/fillFields",(req,res)=>{
   
 })
 
-//Placing Order Algorithm
-router.post("/order-admin",(req,res)=>{
-    let users = require("../routes/user.js").userInfo || {prsnt:1,user:{email:"fake@fake.com",name:"fake",role:"user"}}
+
+
+
+// -----------------------------------------------------------------------------------------
+//-----------------------------------Placing Order Algorithm--------------------------------
+// -----------------------------------------------------------------------------------------
+
+
+
+router.post("/order-admin",async (req,res)=>{
+    console.log("BEFORE ORDER\n\n\norder",orderProduct)
+    // let users = require("../routes/user.js").userInfo
+    
     let keys= Object.keys(req.body);
-    console.log(keys[0])
-    console.log(req.body[keys[0]].length) //no. of tshirts
-    var data = {User:users.user.email, order:{}};
+    console.log("\n\nIN THE ORDER:\n\n\nORDER:",req.body)
+    console.log("DISPLAY CONSTRAINTS:",keys)
+    console.log("Order qty:",req.body[keys[0]].length) //no. of tshirts
+    //create order object
+    let data = {}
     data.order[data.order.length]={}
     var current = {}
     for (i=0;i<req.body[keys[0]].length;i++){
@@ -102,42 +123,26 @@ router.post("/order-admin",(req,res)=>{
         console.log(typeof order)
         console.log(data)
     // } console.log("Data array ready"+'\n'+JSON.stringify(data));
-    // db.collection("orders").insertOne(data,(err,collection)=>{
-        // if(err){
-        //     throw err;
-        // }else{console.log("Order Placed Successfully")}
+
+
+
+
+    var userOrders = await ORDER.findOne({user:users.user.email})
+    if (userOrders==null){
+        var firstData = {user:users.user.email, orders:{}};
+        //insert to db - old code 
+        // db.collection("orders").insertOne(data,(err,collection)=>{
+            // if(err){
+            //     throw err;
+            // }else{console.log("Order Placed Successfully")}
+            // )
+    }else{
+        //findOneAndUpdate
+    }
+
     }
     console.log(data)
-    // )
-
-    // return res.redirect("/shop")
-})
-
-router.post("/order-admin",(req,res)=>{
-    let users = require("../routes/user.js").userInfo || {prsnt:1,user:{email:"fake@fake.com",name:"fake",role:"user"}}
-    let keys= Object.keys(req.body);
-    console.log(keys[0])
-    console.log(req.body[keys[0]].length) //no. of tshirts
-    var data = {User:users.user.email, order:{}};
-    data.order[data.order.length]={}
-    var current = {}
-    for (i=0;i<req.body[keys[0]].length;i++){
-        current = {}
-        for(j=0;j<keys.length;j++){
-            current[keys[j]]=req.body[keys[j]][i]
-        }
-        
-        data.order[data.order.length][`person${i}`]=current
-        console.log(typeof order)
-        console.log(data)
-    // } console.log("Data array ready"+'\n'+JSON.stringify(data));
-    // db.collection("orders").insertOne(data,(err,collection)=>{
-        // if(err){
-        //     throw err;
-        // }else{console.log("Order Placed Successfully")}
-    }
-    console.log(data)
-    // )
+    res.sendStatus(204)
 
     // return res.redirect("/shop")
 })
