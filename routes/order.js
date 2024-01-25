@@ -4,19 +4,10 @@ const router = express.Router()
 const mongoose = require("mongoose")
 require("dotenv").config()
 
-    //database connection
-mongoose.connect(process.env.atlas1+process.env.atlas2+process.env.atlas3+process.env.atlas4)
-var db= mongoose.connection;
-db.on('error',()=>{console.log("Error in Connecting to Database")})
-db.once('open',()=>{console.log("Connected to Database in ORDERS")})
-
-const orderSchema = new mongoose.Schema({User: String,
+const orderSchema = new mongoose.Schema({user: String,
     order: Object})
 ORDER = mongoose.model("orders", orderSchema)
 //-------------------------------------------------------------------------------------------------------------------
-
-
-
 
 
 //variables for usage
@@ -102,50 +93,100 @@ router.post("/fillFields",(req,res)=>{
 
 
 router.post("/order-admin",async (req,res)=>{
-    console.log("BEFORE ORDER\n\n\norder",orderProduct)
+    // console.log("BEFORE ORDER\n\n\norder",orderProduct)
     // let users = require("../routes/user.js").userInfo
     
     let keys= Object.keys(req.body);
-    console.log("\n\nIN THE ORDER:\n\n\nORDER:",req.body)
-    console.log("DISPLAY CONSTRAINTS:",keys)
-    console.log("Order qty:",req.body[keys[0]].length) //no. of tshirts
-    //create order object
-    let data = {}
-    data.order[data.order.length]={}
+    // console.log("\n\nIN THE ORDER:\n\n\nORDER:",req.body)
+    // console.log("DISPLAY CONSTRAINTS:",keys)
+    // console.log("Order qty:",req.body[keys[0]].length) //no. of tshirts
+
+
+    //create order object-----------------------
+    let thisOrder={}
     var current = {}
-    for (i=0;i<req.body[keys[0]].length;i++){
+    for (i=0;i<req.body[keys[0]].length;i++){ //runs for no. of orders
         current = {}
         for(j=0;j<keys.length;j++){
             current[keys[j]]=req.body[keys[j]][i]
         }
         
-        data.order[data.order.length][`person${i}`]=current
-        console.log(typeof order)
-        console.log(data)
-    // } console.log("Data array ready"+'\n'+JSON.stringify(data));
+        thisOrder[`person${i}`]=current
+    }     
+    // console.log("Data array ready"+'\n'+thisOrder);
+    // console.log(typeof thisOrder)    
+    var thisData = {user:users.user.email, order:thisOrder};
+    // console.log("pushing to db:",thisData)
+
+    //insert to db---------------------------
+    
+    //database connection
+mongoose.connect(process.env.atlas1+process.env.atlas2+process.env.atlas3+process.env.atlas4)
+var db= mongoose.connection;
+db.on('error',()=>{console.log("Error in Connecting to Database")})
+db.once('open',()=>{console.log("Connected to Database in ORDERS")})
 
 
 
+    await db.collection("orders").insertOne(thisData,(err,collection)=>{
+        if(err){
+            throw err;
+        }else{console.log("Order Placed Successfully")}
+        })
 
-    var userOrders = await ORDER.findOne({user:users.user.email})
-    if (userOrders==null){
-        var firstData = {user:users.user.email, orders:{}};
-        //insert to db - old code 
-        // db.collection("orders").insertOne(data,(err,collection)=>{
-            // if(err){
-            //     throw err;
-            // }else{console.log("Order Placed Successfully")}
-            // )
-    }else{
-        //findOneAndUpdate
-    }
-
-    }
-    console.log(data)
-    res.sendStatus(204)
-
-    // return res.redirect("/shop")
+        
+    return res.redirect("/shop")
 })
+
+
+router.post("/order-user",async (req,res)=>{
+    // console.log("BEFORE ORDER\n\n\norder",orderProduct)
+    // let users = require("../routes/user.js").userInfo
+    
+    let keys= Object.keys(req.body);
+    // console.log("\n\nIN THE ORDER:\n\n\nORDER:",req.body)
+    // console.log("DISPLAY CONSTRAINTS:",keys)
+    // console.log("Order qty:",req.body[keys[0]].length) //no. of tshirts
+
+
+    //create order object-----------------------
+    let thisOrder={}
+    var current = {}
+    for (i=0;i<req.body[keys[0]].length;i++){ //runs for no. of orders
+        current = {}
+        for(j=0;j<keys.length;j++){
+            current[keys[j]]=req.body[keys[j]][i]
+        }
+        
+        thisOrder[`person${i}`]=current
+    }     
+    // console.log("Data array ready"+'\n'+thisOrder);
+    // console.log(typeof thisOrder)    
+    var thisData = {user:users.user.email, order:thisOrder};
+    // console.log("pushing to db:",thisData)
+
+    //insert to db---------------------------
+    
+    //database connection
+mongoose.connect(process.env.atlas1+process.env.atlas2+process.env.atlas3+process.env.atlas4)
+var db= mongoose.connection;
+db.on('error',()=>{console.log("Error in Connecting to Database")})
+db.once('open',()=>{console.log("Connected to Database in ORDERS")})
+
+
+
+    await db.collection("orders").insertOne(thisData,(err,collection)=>{
+        if(err){
+            throw err;
+        }else{console.log("Order Placed Successfully")}
+        })
+
+        
+    return res.redirect("/shop")
+})
+
+
+
 
 
 
