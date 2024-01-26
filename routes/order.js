@@ -5,7 +5,10 @@ const mongoose = require("mongoose")
 require("dotenv").config()
 
 const orderSchema = new mongoose.Schema({user: String,
-    order: Object})
+                                        orderQty:Object,
+                                        orderProduct:Object,
+                                        order: Object                                        
+                                        })
 ORDER = mongoose.model("orders", orderSchema)
 //-------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +16,7 @@ ORDER = mongoose.model("orders", orderSchema)
 //variables for usage
 let orderProduct=0;
 let qty_field = 0;
-let users =  {prsnt:1,user:{email:"fake@fake.com",name:"fake",role:"admin"}}
+// let users =  {prsnt:1,user:{email:"fake@fake.com",name:"fake",role:"admin"}}
 // console.log("current user", users.user)
 
 
@@ -25,7 +28,7 @@ let users =  {prsnt:1,user:{email:"fake@fake.com",name:"fake",role:"admin"}}
 
 
 router.get("/",(req,res) =>{
-    // let users = require("../routes/user.js").userInfo
+    let users = require("../routes/user.js").userInfo
     // console.log("from get/: ", users.user)
     if (users.user==null){
         res.redirect("/user/login")
@@ -66,7 +69,7 @@ router.post("/orderPreference", (req,res)=>{
 
 //Stage 2
 router.post("/fillFields",(req,res)=>{
-    // let users = require("../routes/user.js").userInfo
+    let users = require("../routes/user.js").userInfo
     // console.log(users.user.role)
     req.body.field = req.body.field.filter(function (element){ //to remove empty fields from response
         return element != ''
@@ -94,13 +97,13 @@ router.post("/fillFields",(req,res)=>{
 
 router.post("/order-admin",async (req,res)=>{
     // console.log("BEFORE ORDER\n\n\norder",orderProduct)
-    // let users = require("../routes/user.js").userInfo
+    let users = require("../routes/user.js").userInfo
     
     let keys= Object.keys(req.body);
     // console.log("\n\nIN THE ORDER:\n\n\nORDER:",req.body)
     // console.log("DISPLAY CONSTRAINTS:",keys)
     // console.log("Order qty:",req.body[keys[0]].length) //no. of tshirts
-
+    let qty = req.body[keys[0]].length
 
     //create order object-----------------------
     let thisOrder={}
@@ -115,7 +118,7 @@ router.post("/order-admin",async (req,res)=>{
     }     
     // console.log("Data array ready"+'\n'+thisOrder);
     // console.log(typeof thisOrder)    
-    var thisData = {user:users.user.email, order:thisOrder};
+    var thisData = {user:users.user.email, orderQty:qty,orderProduct:orderProduct, order:thisOrder};
     // console.log("pushing to db:",thisData)
 
     //insert to db---------------------------
@@ -141,7 +144,7 @@ db.once('open',()=>{console.log("Connected to Database in ORDERS")})
 
 router.post("/order-user",async (req,res)=>{
     // console.log("BEFORE ORDER\n\n\norder",orderProduct)
-    // let users = require("../routes/user.js").userInfo
+    let users = require("../routes/user.js").userInfo
     
     let keys= Object.keys(req.body);
     // console.log("\n\nIN THE ORDER:\n\n\nORDER:",req.body)
