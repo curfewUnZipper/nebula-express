@@ -28,23 +28,22 @@ let qty_field = 0;
 
 
 router.get("/",(req,res) =>{
-    let users = require("../routes/user.js").userInfo
-    // console.log("from get/: ", users.user)
-    if (users.user==null){
+    try{
+        let users = require("../routes/user.js").userInfo
+            if(users.user.role=="admin"){
+                res.render('order/adminFields1',{orderProduct:orderProduct, user:users.user})
+            }else if(users.user.role=="user"){
+                res.render('order/userFields1',{orderProduct:orderProduct, user:users.user})
+    
+            }  else{
+                res.send("You are not allowed to order with Team Member Role.")
+            }
+        
+    }catch(err){
         res.redirect("/user/login")
-        console.log("Sign-in/Register")    
-    }else{
-        console.log("----Bypased Login for Testing in order.js at get(\"lh:3000/order\")-----")
-
-        if(users.user.role=="admin"){
-            res.render('order/adminFields1',{orderProduct:orderProduct, user:users.user})
-        }else if(users.user.role=="user"){
-            res.render('order/userFields1',{orderProduct:orderProduct, user:users.user})
-
-        }  else{
-            res.send("You are not allowed to order with Team Member Role.")
-        }
-    }
+            console.log("Sign-in/Register")}    
+      
+    
 })
     
 
@@ -150,7 +149,7 @@ router.post("/order-user",async (req,res)=>{
     // console.log("\n\nIN THE ORDER:\n\n\nORDER:",req.body)
     // console.log("DISPLAY CONSTRAINTS:",keys)
     // console.log("Order qty:",req.body[keys[0]].length) //no. of tshirts
-
+    let qty = req.body[keys[0]].length
 
     //create order object-----------------------
     let thisOrder={}
@@ -165,7 +164,7 @@ router.post("/order-user",async (req,res)=>{
     }     
     // console.log("Data array ready"+'\n'+thisOrder);
     // console.log(typeof thisOrder)    
-    var thisData = {user:users.user.email, order:thisOrder};
+    var thisData = {user:users.user.email, orderQty:qty,orderProduct:orderProduct, order:thisOrder};
     // console.log("pushing to db:",thisData)
 
     //insert to db---------------------------
