@@ -56,7 +56,7 @@
                 fill="white"
               />
             </svg>
-            Home
+            <a href="/">Home</a>
           </div>
           <div class="sideItems">
             <svg
@@ -71,7 +71,7 @@
                 fill="white"
               />
             </svg>
-            Profile
+            <a href="/dashboard">Profile</a>
           </div>
           <div class="sideItems">
             <svg
@@ -86,7 +86,8 @@
                 fill="white"
               />
             </svg>
-            <a href="#" class="gay">Your Orders</a>
+            <!-- ______________---------------_______________YOUR ORDERS BUTTON HERE_______________---------------------____________________ -->
+            <a href="/dashboard/orders" class="gay">Your Orders</a>        
           </div>
           <div class="sideItems">
             <svg
@@ -182,6 +183,20 @@
           </div>
         </div>
       </div>
+
+
+
+
+
+
+<!-- ----------------------------------------------------SIDEBAR ENDS AND HEADER STARTS HERE -------------------------------- -->
+
+
+
+
+
+
+
       <div class="grid-item" id="header">
         <div class="searchBar">
           <svg
@@ -212,14 +227,14 @@
             />
           </svg>
           <img src="pic.jpg" alt="profilePic" class="photo" />
-          <div class="userName">Customer</div>
+          <div class="userName"><%= locals.user.Name %></div>
         </div>
       </div>
       <div class="grid-item" id="navBar">
         <div class="leftSide">
           <img src="pic.jpg" alt="profilePic" class="photo" />
           <div class="greetings">
-            <p>Hi there, <b>Customer</b></p>
+            <p>Hi there, <b><%= locals.user.Name %></b></p>
           </div>
         </div>
         <div class="rightSide">
@@ -229,7 +244,7 @@
         </div>
       </div>
       <div class="grid-item" id="mainBody">
-        <div id="mainHeading"><a href="/user/orders">Your Orders</a></div>
+        <div id="mainHeading"><a href="/dashboard/orders">Your Orders</a></div>
 
         <div id="projects">
           <div class="card">

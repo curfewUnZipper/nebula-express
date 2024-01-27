@@ -6,15 +6,13 @@ require("dotenv").config()
 let prsnt = null //the thing
 var flagLogin = false;
 //database connection
+USER = require("../models/user.js")
+
 mongoose.connect(process.env.atlas1+process.env.atlas2+process.env.atlas3+process.env.atlas4)
 var db= mongoose.connection;
 db.on('error',()=>{console.log("Error in Connecting to Database")})
 db.once('open',()=>{console.log("Connected to Database in USERS")})
-const userSchema = new mongoose.Schema({Name: String,
-                                        password: String,
-                                        email: String,
-                                        role: String})
-USER = mongoose.model("User", userSchema)
+
 
 
 router.get("/",(req,res) =>{
@@ -92,19 +90,23 @@ router.post("/adminSignup",(req,res)=>{
 
 //login
 router.post("/login",(req,res)=>{
-    if (req.body.email!='' &&
-        req.body.password!=''){
+    // if (req.body.email!='' &&
+    //     req.body.password!=''){
     flagChangeLog()
     async function flagChangeLog(){
-    flagLogin = await loginUser(req.body.email,req.body.password)
+    // flagLogin = await loginUser(req.body.email,req.body.password)
+    flagLogin = await loginUser("gg@gg.com","gg")
     if (flagLogin.flag==true){prsnt=0;
         module.exports.userInfo = {pres:prsnt,user:flagLogin.userIn};
+        console.log("BYPASSED LOGIN at routes/user.js>\n\nline 95,96,99,110 commented\n\n and views/user/login>\n\nline:22 and 26 ~required~\n\n")
+
         res.redirect("/dashboard")}
     else{console.log("Invalid email or Password")}
   } 
 }   
     
-})
+// }
+)
 
 
 

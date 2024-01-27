@@ -4,12 +4,8 @@ const router = express.Router()
 const mongoose = require("mongoose")
 require("dotenv").config()
 
-const orderSchema = new mongoose.Schema({user: String,
-                                        orderQty:Object,
-                                        orderProduct:Object,
-                                        order: Object                                        
-                                        })
-ORDER = mongoose.model("orders", orderSchema)
+
+ORDER = require("../models/order.js")
 //-------------------------------------------------------------------------------------------------------------------
 
 
